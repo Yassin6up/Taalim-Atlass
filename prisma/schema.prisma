@@ -11,25 +11,92 @@ datasource db {
 }
 
 model User {
-  id        Int      @unique @default(autoincrement())
-  name      String
-  email     String   @unique
-  gender    String?
-  password  String
-  phone     String?
-  age       Int?
-  bio       String?
-  photo     String?
-  posts     Post[]
-  createdAt DateTime @default(now())
+  id           Int      @unique @default(autoincrement())
+  name         String
+  email        String   @unique
+  gender       String?
+  password     String
+  phone        String?
+  city         String?
+  school       String?
+  age          Int?
+  bio          String?
+  xp           Int?     @default(0)
+  photo        String?
+  level        String?
+  Specialety   String?
+  vediowsView  Int?     @default(0)
+  filesRead    Int?     @default(0)
+  quizeDone    Int?     @default(0)
+  exirciseDone Int?     @default(0)
+  tasksDone    Int?     @default(0)
+  dailyOpen    Int?     @default(0)
+  tasks        Tasks[]
+  createdAt    DateTime @default(now())
 }
 
-model Post {
-  id        Int     @id @default(autoincrement())
+model Mattier {
+  id         Int     @id @default(autoincrement())
+  title      String
+  speciality String
+  level      String
+  photo      String?
+  progress   Int?
+  color      String?
+
+  slug String    @unique
+  list Lession[]
+}
+
+model Lession {
+  id        Int      @id @default(autoincrement())
   title     String
-  img       String
-  content   String?
-  published Boolean @default(false)
-  author    User    @relation(fields: [authorId], references: [id])
-  authorId  Int
+  Mattier   Mattier? @relation(fields: [mattierId], references: [id])
+  mattierId Int?
+  Cours     Cours[]
+  tasks     Tasks[]
+}
+
+model Cours {
+  id           Int        @id @default(autoincrement())
+  type         String
+  title        String
+  progress     Int?
+  color        String?
+  photo        String
+  level        String
+  speciality   String
+  ListCoirses  Lession?   @relation(fields: [listCorsesId], references: [id])
+  listCorsesId Int?
+  playList     PlayList[]
+}
+
+model PlayList {
+  id       Int     @id @default(autoincrement())
+  title    String
+  course   Cours?  @relation(fields: [courseId], references: [id])
+  courseId Int?
+  video    Video[]
+}
+
+model Video {
+  id          Int       @id @default(autoincrement())
+  title       String
+  link        String
+  description String?
+  views       Int?
+  createdAt   DateTime  @default(now())
+  PlayList    PlayList? @relation(fields: [playListId], references: [id])
+  playListId  Int?
+}
+
+model Tasks {
+  id        Int      @id @default(autoincrement())
+  title     String
+  done      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  User      User?    @relation(fields: [userId], references: [id])
+  userId    Int?
+  Lession   Lession? @relation(fields: [lessionId], references: [id])
+  lessionId Int?
 }

@@ -6,7 +6,7 @@ const login = require("./routes/login");
 const profile  = require('./routes/apis/profile')
 const passport = require('passport');
 const cors = require('cors'); // Import the cors middleware
-
+const mattier = require("./routes/apis/mattier")
 const verifyAndDecodeToken = require('./utils/decodedToken');
 
 app.use(bodyParser.json()); // to support JSON-encoded bodies
@@ -22,30 +22,37 @@ app.use(cors({
 })); // Enable CORS for all routes
 
 // Middleware for token verification
-app.use((req, res, next) => {
-  if(req.path.includes('login') || req.path.includes('createUser')) {
-      return next(); // Skip token verification for login and createUser routes
-  }
-  const token = req.headers.authorization;
-  
-  if (token) {
-      const decodedToken = verifyAndDecodeToken(token);
-      if (decodedToken) {
-          console.log('User:', decodedToken);
-          req.user = decodedToken; // Set user information in the request object
-          return next(); // Continue to the next middleware or route handler
-      }
-  }
 
-  return res.status(401).json({ message: 'Unauthorized' }); // Return unauthorized status if token is missing or invalid
-});
+// app.use((req, res, next) => {
+//   if(req.path.includes('login') || req.path.includes('createUser')) {
+//       return next(); // Skip token verification for login and createUser routes
+//   }
+//   const token = req.headers.authorization;
+  
+//   if (token) {
+//       const decodedToken = verifyAndDecodeToken(token);
+//       if (decodedToken) {
+//           console.log('User:', decodedToken);
+//           req.user = decodedToken; // Set user information in the request object
+//           return next(); // Continue to the next middleware or route handler
+//       }
+//   }
+
+//   return res.status(401).json({ message: 'Unauthorized' }); // Return unauthorized status if token is missing or invalid
+// });
 
 
 
 
 app.use('/createUser', createUser);
 app.use('/login', login);
-app.use("/api/" , profile )
+app.use("/api/" , profile );
+app.use('/api/' , mattier);
+
+
+
+
+
 // Uncomment if implementing Facebook authentication
 // app.get('/auth/facebook', passport.authenticate('facebook'));
 // app.get('/auth/facebook/callback',
@@ -54,6 +61,7 @@ app.use("/api/" , profile )
 //     // Redirect or respond with the token based on your requirements
 //     res.json({ token: req.user.token });
 //   });
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {
