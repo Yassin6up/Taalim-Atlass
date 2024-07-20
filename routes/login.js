@@ -13,11 +13,12 @@ router.post("/", async (req, res) => {
         });
 
         if (user) {
+
             const passwordMatch = await bcrypt.compare(password, user.password);
 
             if (passwordMatch) {
                 const token = generateAccessToken(user);
-                res.json({ token:token, user , message : "ok" });
+                res.json({ user: {...user, token}, message : "ok" });
             } else {
                 res.status(401).json({ message: 'Invalid Password' });
             }

@@ -4,10 +4,11 @@ const bodyParser = require("body-parser");
 const createUser = require('./routes/register');
 const login = require("./routes/login");
 const profile  = require('./routes/apis/profile')
-const passport = require('passport');
+//const passport = require('passport');
 const cors = require('cors'); // Import the cors middleware
 const mattier = require("./routes/apis/mattier")
 const verifyAndDecodeToken = require('./utils/decodedToken');
+const getUserByToken = require("./routes/getUserByToken")
 
 app.use(bodyParser.json()); // to support JSON-encoded bodies
 app.use(
@@ -46,6 +47,7 @@ app.use(cors({
 
 app.use('/createUser', createUser);
 app.use('/login', login);
+app.use('/getUserByToken', getUserByToken);
 app.use("/api/" , profile );
 app.use('/api/' , mattier);
 

@@ -11,9 +11,10 @@ datasource db {
 }
 
 model User {
-  id           Int      @unique @default(autoincrement())
-  name         String
-  email        String   @unique
+  id           Int     @unique @default(autoincrement())
+  nom          String
+  prenom       String
+  email        String  @unique
   gender       String?
   password     String
   phone        String?
@@ -21,18 +22,28 @@ model User {
   school       String?
   age          Int?
   bio          String?
-  xp           Int?     @default(0)
+  xp           Int?    @default(0)
   photo        String?
   level        String?
-  Specialety   String?
-  vediowsView  Int?     @default(0)
-  filesRead    Int?     @default(0)
-  quizeDone    Int?     @default(0)
-  exirciseDone Int?     @default(0)
-  tasksDone    Int?     @default(0)
-  dailyOpen    Int?     @default(0)
+  vediowsView  Int?    @default(0)
+  filesRead    Int?    @default(0)
+  quizeDone    Int?    @default(0)
+  exirciseDone Int?    @default(0)
+  tasksDone    Int?    @default(0)
+  dailyOpen    Int?    @default(0)
   tasks        Tasks[]
-  createdAt    DateTime @default(now())
+
+  budget                         String?
+  niveauxEdu                     String?
+  Specialety                     String? // filiere
+  bacLangue                      String?
+  bac1Score                      Float?
+  bac2Score                      Float?
+  preferredUniversityFundingType String?
+  preferredServices              Json?
+  preferedCities                 Json?
+
+  createdAt DateTime @default(now())
 }
 
 model Mattier {
